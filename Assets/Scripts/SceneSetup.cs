@@ -16,6 +16,6 @@ public class SceneSetup : MonoBehaviour
 
         if (car1) car1.transform.position = new Vector3(4, 0.5f, 5);
         if (car2) car2.transform.position = new Vector3(4, 0.5f, 15);
-        if (car3) car3.transform.position = new Vector3(4, 0.5f, 35);
+        if (car3) car3.transform.position = new Vector3(4, 0.5f, 30);
     }
 }
