@@ -60,11 +60,11 @@ public class ParkingFSM : MonoBehaviour
         rb.linearVelocity = transform.forward * driveSpeed;
 
         // Czekaj aż tylny czujnik zobaczy przednie auto luki
-        if (sensor.rightBack < 4.5f)
+        if (sensor.rightBack < 4f)
         {
             rb.linearVelocity = Vector3.zero;
             startAngle  = transform.eulerAngles.y;
-            targetAngle = startAngle - 45f;
+            targetAngle = startAngle-45f;
             currentState = State.Reversing1;
             Debug.Log("Zaczynam manewr!");
         }

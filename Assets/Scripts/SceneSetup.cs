@@ -6,7 +6,7 @@ public class SceneSetup : MonoBehaviour
     {
         // Znajdź i ustaw AutoAgent
         GameObject agent = GameObject.Find("AutoAgent");
-        if (agent) agent.transform.position = new Vector3(-1, 0.5f, 0);
+        if (agent) agent.transform.position = new Vector3(0, 0.5f, 0);
         
 
         // Ustaw zaparkowane auta
@@ -16,6 +16,6 @@ public class SceneSetup : MonoBehaviour
 
         if (car1) car1.transform.position = new Vector3(4, 0.5f, 5);
         if (car2) car2.transform.position = new Vector3(4, 0.5f, 15);
-        if (car3) car3.transform.position = new Vector3(4, 0.5f, 30);
+        if (car3) car3.transform.position = new Vector3(4, 0.5f, 32);
     }
 }

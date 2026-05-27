@@ -839,7 +839,7 @@ Transform:
   m_GameObject: {fileID: 779168632}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4, y: 0.5, z: 28}
+  m_LocalPosition: {x: 4, y: 0.5, z: 42.64}
   m_LocalScale: {x: 2, y: 1, z: 4.5}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1004,7 +1004,7 @@ Transform:
   m_GameObject: {fileID: 918577886}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -15, y: 0.5, z: 0}
+  m_LocalPosition: {x: -0.43, y: 0.5, z: -4}
   m_LocalScale: {x: 2, y: 1, z: 4.5}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1044,7 +1044,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 918577886}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d7241fbe41ce3704c8f7bceb726b6ccd, type: 3}
   m_Name: 
@@ -1063,11 +1063,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54e2f92c4e9dcce448a055891316aa97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ParkingSensor
-  frontSensorLength: 4
   sideSensorLength: 8
-  diagonalLength: 4
-  gapThreshold: 3
-  minGapLength: 6.5
+  frontSensorLength: 4
+  diagSensorLength: 6
   front: 0
   back: 0
   frontLeft: 0
@@ -1077,9 +1075,12 @@ MonoBehaviour:
   rightFront: 0
   rightMiddle: 0
   rightBack: 0
+  leftFront: 0
+  leftMiddle: 0
+  leftBack: 0
   gapFound: 0
-  gapCenter: {x: 0, y: 0, z: 0}
-  gapLength: 0
+  gapSize: 0
+  gapCenterPosition: {x: 0, y: 0, z: 0}
 --- !u!114 &918577894
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1097,7 +1098,7 @@ MonoBehaviour:
   reverseSpeed: 1.5
   alignSpeed: 0.8
   frontStopDist: 1.5
-  backStopDist: 2
+  backStopDist: 2.5
   sideWarnDist: 1.5
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

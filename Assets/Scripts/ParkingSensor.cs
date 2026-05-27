@@ -74,7 +74,7 @@ public class ParkingSensor : MonoBehaviour
 
     void DetectGap()
     {
-        float threshold = 4f;
+        float threshold = 5f;
         bool clear = rightFront > threshold && rightMiddle > threshold && rightBack > threshold;
         SideState cur = clear ? SideState.Clear : SideState.Obstacle;
 
