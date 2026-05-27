@@ -20,10 +20,16 @@ public class SceneSetup : MonoBehaviour
         GameObject car1 = GameObject.Find("AutoZaparkowane_1");
         GameObject car2 = GameObject.Find("AutoZaparkowane_2");
         GameObject car3 = GameObject.Find("AutoZaparkowane_3");
+        GameObject car4 = GameObject.Find("AutoZaparkowane_4");
+        GameObject car5 = GameObject.Find("AutoZaparkowane_5");
+        GameObject car6 = GameObject.Find("AutoZaparkowane_6");
 
-        if (car1) { car1.transform.position = new Vector3(4, 0.5f, 5);  SetColor(car1, new Color(0.8f, 0.1f, 0.1f)); } // czerwony
+        if (car1) { car1.transform.position = new Vector3(4.1f, 0.5f, 5);  SetColor(car1, new Color(0.8f, 0.1f, 0.1f)); } // czerwony
         if (car2) { car2.transform.position = new Vector3(4, 0.5f, 15); SetColor(car2, new Color(0.1f, 0.3f, 0.8f)); } // niebieski
-        if (car3) { car3.transform.position = new Vector3(4, 0.5f, 32); SetColor(car3, new Color(0.1f, 0.7f, 0.2f)); } // zielony
+        if (car3) { car3.transform.position = new Vector3(4.1f, 0.5f, 32); SetColor(car3, new Color(0.1f, 0.7f, 0.2f)); } // zielony
+        if (car4) { car4.transform.position = new Vector3(-4, 0.5f, 5);  SetColor(car4, new Color(0.2f, 0.1f, 0.1f)); } // 
+        if (car5) { car5.transform.position = new Vector3(-4, 0.5f, 15); SetColor(car5, new Color(0.9f, 0.4f, 0.2f)); } // 
+        if (car6) { car6.transform.position = new Vector3(-4, 0.5f, 32); SetColor(car6, new Color(0.9f, 0.3f, 0.3f)); } // 
 
         // Droga
         CreateRoad();
