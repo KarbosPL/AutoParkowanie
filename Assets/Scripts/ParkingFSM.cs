@@ -95,7 +95,7 @@ public class ParkingFSM : MonoBehaviour
 
     if (Mathf.Abs(diff) > 1f)
     {
-        float rotStep = Mathf.Clamp(diff, -35f, 35f) * Time.fixedDeltaTime;
+        float rotStep = Mathf.Clamp(diff, -40f, 40f) * Time.fixedDeltaTime;
         rb.MoveRotation(rb.rotation * Quaternion.Euler(0, rotStep, 0));
     }
     else
@@ -125,7 +125,7 @@ void Reversing2()
 
     if (Mathf.Abs(diff) > 1f)
     {
-        float rotStep = Mathf.Clamp(diff, -35f, 35f) * Time.fixedDeltaTime;
+        float rotStep = Mathf.Clamp(diff, -40f, 40f) * Time.fixedDeltaTime;
         rb.MoveRotation(rb.rotation * Quaternion.Euler(0, rotStep, 0));
     }
     else
@@ -145,7 +145,7 @@ void Reversing2()
         if (Mathf.Abs(diff) > 0.4f)
         {
             // Jedź w stronę gdzie jest więcej miejsca
-            float dir = diff > 0 ? -1f : 1f;
+            float dir = diff > 0 ? 1f : -1f;
             rb.linearVelocity = transform.forward * dir * alignSpeed;
         }
         else
