@@ -55,6 +55,7 @@ public class ScenaMapa1 : MonoBehaviour
         CreateParkingLines();
     }
 
+
     void CreateCar(string name, Vector3 pos, Color color)
     {
         GameObject existing = GameObject.Find(name);
