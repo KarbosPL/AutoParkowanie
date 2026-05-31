@@ -245,6 +245,7 @@ GameObject:
   - component: {fileID: 328984474}
   - component: {fileID: 328984478}
   - component: {fileID: 328984479}
+  - component: {fileID: 328984480}
   m_Layer: 0
   m_Name: Plane
   m_TagString: Untagged
@@ -365,11 +366,23 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 328984473}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0ff00929adb247744b7ec3f0c7e76586, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ScenaMapa1
+--- !u!114 &328984480
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 328984473}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e642c76cba160244eab6df40d0409986, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ScenaMapa2
 --- !u!1 &330585543
 GameObject:
   m_ObjectHideFlags: 0
