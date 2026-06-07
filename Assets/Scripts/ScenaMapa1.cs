@@ -24,6 +24,7 @@ public class ScenaMapa1 : MonoBehaviour
         CreateCar("AutoZaparkowane_6", new Vector3(-4f, 0.5f, -25f), new Color(0.1f, 0.5f, 0.5f));
         CreateCar("AutoZaparkowane_7", new Vector3(-4f, 0.5f, -35f), new Color(0.6f, 0.2f, 0.2f));
         CreateCar("AutoZaparkowane_8", new Vector3(-4f, 0.5f, -45f), new Color(0.2f, 0.6f, 0.3f));
+        CreateCar("AutoZaparkowane_9", new Vector3(-4f, 0.5f, 15f), new Color(0.2f, 0.6f, 0.3f));
 
         // Tekstura na Plane
         GameObject planeObj = GameObject.Find("Plane");
