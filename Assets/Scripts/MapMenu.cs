@@ -3,13 +3,22 @@ using UnityEngine.SceneManagement;
 
 public class MapMenu : MonoBehaviour
 {
+    void Start()
+    {
+        // Reset tylko przy pierwszym uruchomieniu gry
+        if (!PlayerPrefs.HasKey("gameStarted"))
+        {
+            PlayerPrefs.SetInt("selectedMap", 0);
+            PlayerPrefs.SetInt("gameStarted", 1);
+        }
+    }
+
     void OnGUI()
     {
         int map = PlayerPrefs.GetInt("selectedMap", 0);
 
         if (map == 0)
         {
-            // Czarny ekran za menu
             GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height),
                 Texture2D.blackTexture);
             DrawMenu();
@@ -26,7 +35,6 @@ public class MapMenu : MonoBehaviour
 
         GUIStyle title = new GUIStyle(GUI.skin.label);
         title.fontSize = 28;
-        title.fontStyle = FontStyle.Bold;
         title.normal.textColor = Color.white;
         title.alignment = TextAnchor.MiddleCenter;
         GUI.Label(new Rect(w/2 - 150, h/2 - 160, 300, 50), "Auto Parkowanie", title);
@@ -34,12 +42,10 @@ public class MapMenu : MonoBehaviour
         GUIStyle btn = new GUIStyle(GUI.skin.button);
         btn.fontSize = 18;
 
-        if (GUI.Button(new Rect(w/2 - 120, h/2 - 80, 240, 50), "Mapa 1 - Prostopadłe", btn))
+        if (GUI.Button(new Rect(w/2 - 120, h/2 - 80, 240, 50), "Mapa 1 - Równoległe", btn))
             LoadMap(1);
-
-        if (GUI.Button(new Rect(w/2 - 120, h/2 - 10, 240, 50), "Mapa 2 - Równoległe", btn))
+        if (GUI.Button(new Rect(w/2 - 120, h/2 - 10, 240, 50), "Mapa 2 - Prostopadłe", btn))
             LoadMap(2);
-
         if (GUI.Button(new Rect(w/2 - 120, h/2 + 60, 240, 50), "Mapa 3 - Skośne", btn))
             LoadMap(3);
     }
@@ -66,5 +72,12 @@ public class MapMenu : MonoBehaviour
     {
         PlayerPrefs.SetInt("selectedMap", map);
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    void OnApplicationQuit()
+    {
+        // Reset przy zamknięciu gry
+        PlayerPrefs.DeleteKey("gameStarted");
+        PlayerPrefs.SetInt("selectedMap", 0);
     }
 }
