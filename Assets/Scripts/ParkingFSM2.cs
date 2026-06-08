@@ -119,6 +119,110 @@ public class ParkingFSM2 : MonoBehaviour
         prevRightClear = rightClear;
         prevLeftClear  = leftClear;
     }
+    private bool lukaRozpoczeta = false;
+
+    // void Driving()
+    // {
+    //     if (sensor.front < frontStopDist)
+    //     {
+    //         rb.linearVelocity = Vector3.zero;
+    //         return;
+    //     }
+
+    //     rb.linearVelocity = transform.forward * driveSpeed;
+
+    //     bool rightClear = sensor.rightMiddle > 3.5f;
+    //     bool leftClear  = sensor.leftMiddle  > 3.5f;
+
+    //     // Kamera widzi linię = początek lub koniec miejsca parkingowego
+    //     bool kameraWidziLinie = sensor.cameraFR || sensor.cameraFL ||
+    //                             sensor.cameraBR || sensor.cameraBL;
+
+    //     // Wejście w lukę - tylko gdy kamera widzi linię (to jest granica miejsca)
+    //     if (!prevRightClear && rightClear && kameraWidziLinie)
+    //     {
+    //         gapStartPos  = transform.position;
+    //         inGap        = true;
+    //         parkingRight = true;
+    //         Debug.Log("Luka prawa - start przy linii");
+    //     }
+
+    //     if (!prevLeftClear && leftClear && !inGap && kameraWidziLinie)
+    //     {
+    //         gapStartPos  = transform.position;
+    //         inGap        = true;
+    //         parkingRight = false;
+    //         Debug.Log("Luka lewa - start przy linii");
+    //     }
+
+    //     if (inGap)
+    //     {
+    //         bool stillClear = parkingRight ? rightClear : leftClear;
+    //         if (!stillClear && kameraWidziLinie)
+    //         {
+    //             inGap = false;
+    //             MeasureAndDecide();
+    //         }
+    //         else if (!stillClear)
+    //         {
+    //             // Koniec luki ale bez linii - ignoruj
+    //             inGap = false;
+    //             measuredLength = 0f;
+    //             Debug.Log("Koniec luki bez linii - ignoruję");
+    //         }
+    //     }
+
+    //     prevRightClear = rightClear;
+    //     prevLeftClear  = leftClear;
+    // }
+
+    // void MeasureAndDecide()
+    // {
+    //     Vector3 toHere = transform.position - gapStartPos;
+    //     measuredLength = Vector3.Dot(toHere, transform.forward);
+
+    //     Vector3 midPoint = gapStartPos + transform.forward * (measuredLength / 2f);
+    //     Vector3 sideDir  = parkingRight ? transform.right : -transform.right;
+
+    //     RaycastHit hit;
+    //     if (Physics.Raycast(midPoint, sideDir, out hit, 15f))
+    //         measuredDepth = hit.distance;
+    //     else
+    //         measuredDepth = 15f;
+
+    //     // Sprawdź kamery - czy luka zaczyna i kończy się na linii
+    //     bool liniaWejscie = sensor.cameraFL || sensor.cameraBL;
+    //     bool liniaWyjscie = sensor.cameraFR || sensor.cameraBR;
+
+    //     if (!liniaWejscie || !liniaWyjscie)
+    //     {
+    //         Debug.Log("Brak linii parkingowych - ignoruję lukę");
+    //         gapStartPos = transform.position;
+    //         measuredLength = 0f;
+    //         return;
+    //     }
+
+    //     Debug.Log($"Luka: długość={measuredLength:F1}m, głębokość={measuredDepth:F1}m");
+
+    //     if (measuredDepth >= minDepthPerp && measuredLength >= minLengthPerp)
+    //     {
+    //         parkingType  = ParkingType.Perpendicular;
+    //         perpParking  = true;
+    //         currentState = State.Positioning;
+    //         Debug.Log("Decyzja: PROSTOPADŁE");
+    //     }
+    //     else if (measuredLength >= minLengthParallel)
+    //     {
+    //         parkingType  = ParkingType.Parallel;
+    //         perpParking  = false;
+    //         currentState = State.Positioning;
+    //         Debug.Log("Decyzja: RÓWNOLEGŁE");
+    //     }
+    //     else
+    //     {
+    //         Debug.Log("Luka za mała, szukam dalej...");
+    //     }
+    // }
 
     void MeasureAndDecide()
     {

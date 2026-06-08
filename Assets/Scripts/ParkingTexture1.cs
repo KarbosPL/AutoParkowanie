@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class ParkingTexture1 : MonoBehaviour
 {
+    
     void Start()
     {
         Texture2D tex = Generate();
@@ -12,6 +13,8 @@ public class ParkingTexture1 : MonoBehaviour
         r.material = mat;
     }
 
+    public static Texture2D parkingTexture;
+    
     Texture2D Generate()
     {
         int W = 2048, H = 2048;
@@ -34,8 +37,8 @@ public class ParkingTexture1 : MonoBehaviour
         Fill(tex, aleL, 0, aleR - aleL, H, asfaltAlejka);
 
         // Krawężniki (linie oddzielające alejkę od parkingów)
-        DrawV(tex, aleL, 0, H, linia, 5);
-        DrawV(tex, aleR, 0, H, linia, 5);
+        //DrawV(tex, aleL, 0, H, linia, 5);
+        //DrawV(tex, aleR, 0, H, linia, 5);
 
         // Linia tylna prawego parkingu: Unity X = 10
         DrawV(tex, ToTexX(W, 6), 0, H, linia, 4);
@@ -58,6 +61,7 @@ public class ParkingTexture1 : MonoBehaviour
         }
 
         tex.Apply();
+        parkingTexture = tex;
         return tex;
     }
 
