@@ -1075,6 +1075,8 @@ GameObject:
   - component: {fileID: 918577893}
   - component: {fileID: 918577895}
   - component: {fileID: 918577896}
+  - component: {fileID: 918577898}
+  - component: {fileID: 918577897}
   m_Layer: 0
   m_Name: AutoAgent
   m_TagString: Untagged
@@ -1282,11 +1284,57 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 918577886}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7375c094d0906d345a4e941ac32849ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WheelVisuals
+--- !u!114 &918577897
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 918577886}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b554bad70219604584bd0fd89596a8f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ParkingFSM_Rownolegle
+  currentState: 0
+  driveSpeed: 3
+  reverseSpeed: 1.5
+  alignSpeed: 0.8
+  minLengthParallel: 6.5
+  frontStopDist: 1.5
+  backStopDist: 2
+  sideWarnDist: 1.5
+  measuredLength: 0
+  parkingRight: 1
+--- !u!114 &918577898
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 918577886}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db9aac0225e576448a7a2f1dc946921e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ParkingFSM_Prostopadle
+  currentState: 0
+  driveSpeed: 3
+  reverseSpeed: 1.5
+  minDepthPerp: 4.5
+  minLengthPerp: 2.8
+  perpDepth: 5.5
+  frontStopDist: 1.5
+  backStopDist: 2
+  sideWarnDist: 1.5
+  measuredLength: 0
+  measuredDepth: 0
+  parkingRight: 1
 --- !u!1 &1190387020
 GameObject:
   m_ObjectHideFlags: 0
