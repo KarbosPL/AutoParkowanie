@@ -110,8 +110,12 @@ public class ParkingFSM_Rownolegle : MonoBehaviour
         if (sensor.front < frontStopDist) { rb.linearVelocity = Vector3.zero; return; }
         rb.linearVelocity = transform.forward * driveSpeed;
 
-        float middleSensor = parkingRight ? sensor.rightMiddle : sensor.leftMiddle;
-        if (middleSensor < 3.5f)
+        //float middleSensor = parkingRight ? sensor.rightMiddle : sensor.leftMiddle;
+        //if (middleSensor < 3.5f)
+        bool cameraLineR = sensor.cameraBR;
+        bool cameraLineL = sensor.cameraBL;
+        bool cameraLine  = cameraLineR || cameraLineL;
+        if (cameraLine)
         {
             rb.linearVelocity = Vector3.zero;
             startAngle   = transform.eulerAngles.y;
@@ -126,7 +130,7 @@ public class ParkingFSM_Rownolegle : MonoBehaviour
         if (BackObstacleCheck()) return;
         float diff = Mathf.DeltaAngle(transform.eulerAngles.y, targetAngle);
         rb.linearVelocity = -transform.forward * reverseSpeed;
-        if (Mathf.Abs(diff) > 1f)
+        if (Mathf.Abs(diff) > 0.2f)
             rb.MoveRotation(rb.rotation * Quaternion.Euler(0, Mathf.Clamp(diff, -40f, 40f) * Time.fixedDeltaTime, 0));
         else
         {
@@ -141,7 +145,7 @@ public class ParkingFSM_Rownolegle : MonoBehaviour
         if (BackObstacleCheck()) return;
         float diff = Mathf.DeltaAngle(transform.eulerAngles.y, targetAngle);
         rb.linearVelocity = -transform.forward * reverseSpeed;
-        if (Mathf.Abs(diff) > 1f)
+        if (Mathf.Abs(diff) > 3f)
             rb.MoveRotation(rb.rotation * Quaternion.Euler(0, Mathf.Clamp(diff, -40f, 40f) * Time.fixedDeltaTime, 0));
         else
         {
@@ -156,7 +160,7 @@ public class ParkingFSM_Rownolegle : MonoBehaviour
         if (BackObstacleCheck()) return;
         float diff = Mathf.DeltaAngle(transform.eulerAngles.y, targetAngle);
         rb.linearVelocity = -transform.forward * reverseSpeed;
-        if (Mathf.Abs(diff) > 1f)
+        if (Mathf.Abs(diff) > 0.2f)
             rb.MoveRotation(rb.rotation * Quaternion.Euler(0, -Mathf.Clamp(diff, -40f, 40f) * Time.fixedDeltaTime, 0));
         else
         {
@@ -171,7 +175,7 @@ public class ParkingFSM_Rownolegle : MonoBehaviour
         if (BackObstacleCheck()) return;
         float diff = Mathf.DeltaAngle(transform.eulerAngles.y, targetAngle);
         rb.linearVelocity = -transform.forward * reverseSpeed;
-        if (Mathf.Abs(diff) > 1f)
+        if (Mathf.Abs(diff) > 3f)
             rb.MoveRotation(rb.rotation * Quaternion.Euler(0, -Mathf.Clamp(diff, -40f, 40f) * Time.fixedDeltaTime, 0));
         else
         {
