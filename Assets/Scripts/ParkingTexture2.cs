@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class ParkingTexture_Perpendicular : MonoBehaviour
+public class ParkingTexture2 : MonoBehaviour
 {
     void Start()
     {
@@ -19,21 +19,17 @@ public class ParkingTexture_Perpendicular : MonoBehaviour
         int W = 2048, H = 2048;
         Texture2D tex = new Texture2D(W, H);
 
-        Color asfaltAlejka  = new Color(0.22f, 0.22f, 0.22f);
+        Color asfaltAlejka  = new Color(0.35f, 0.35f, 0.35f);  // Bardziej szarawy
         Color asfaltParking = new Color(0.15f, 0.15f, 0.15f);
         Color linia         = Color.white;
 
         // Wypełnij całość asfaltem parkingowym
         Fill(tex, 0, 0, W, H, asfaltParking);
 
-        // Alejka: Unity X = -2.5 do 2.5 (oryginalna szerokość)
+        // Alejka: Unity X = -2.5 do 2.5
         int aleL = ToTexX(W, -2.5f);
         int aleR = ToTexX(W, 2.5f);
         Fill(tex, aleL, 0, aleR - aleL, H, asfaltAlejka);
-
-        // Linie oddzielające alejkę od parkingów
-        DrawV(tex, aleL, 0, H, linia, 4);
-        DrawV(tex, aleR, 0, H, linia, 4);
 
         // === PARKING PROSTOPADŁY ===
         
@@ -45,16 +41,16 @@ public class ParkingTexture_Perpendicular : MonoBehaviour
         int lewaStart = ToTexX(W, -12f);
         int lewaKoniec = ToTexX(W, -2.5f);
         
-        // Linie zewnętrzne parkingów
+        // Linie zewnętrzne parkingów (tylko zewnętrzne krawędzie)
         DrawV(tex, ToTexX(W, 12f), 0, H, linia, 4);
         DrawV(tex, ToTexX(W, -12f), 0, H, linia, 4);
         
         // === MIEJSCA PARKINGOWE ===
-        // Miejsca co 3 jednostki w osi Z
-        float[] miejscaZ = { -42f, -39f, -36f, -33f, -30f, -27f, -24f, -21f, -18f, -15f, -12f, -9f, -6f, -3f, 0f, 3f, 6f, 9f, 12f, 15f, 18f, 21f, 24f, 27f, 30f, 33f, 36f, 39f, 42f };
+        // Miejsca co 4 jednostki w osi Z (szerokość miejsca = 4)
+        float[] miejscaZ = { -44f, -40f, -36f, -32f, -28f, -24f, -20f, -16f, -12f, -8f, -4f, 0f, 4f, 8f, 12f, 16f, 20f, 24f, 28f, 32f, 36f, 40f, 44f };
         
-        // Szerokość miejsca parkingowego
-        float miejsceSzerokosc = 2.8f;
+        // Szerokość miejsca parkingowego = 4
+        float miejsceSzerokosc = 4f;
         
         foreach (float z in miejscaZ)
         {
@@ -68,7 +64,7 @@ public class ParkingTexture_Perpendicular : MonoBehaviour
         }
         
         // Linie poprzeczne na końcach parkingów
-        float[] konceParkingu = { -43.5f, 43.5f };
+        float[] konceParkingu = { -46f, 46f };
         
         foreach (float z in konceParkingu)
         {
