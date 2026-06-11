@@ -29,12 +29,14 @@ public class ParkingFSM_Rownolegle : MonoBehaviour
     private bool prevCameraLineL = false;
     private float startAngle;
     private float targetAngle;
+    
 
     void Start()
     {
         rb     = GetComponent<Rigidbody>();
         sensor = GetComponent<ParkingSensor>();
     }
+
 
     void FixedUpdate()
     {
@@ -245,7 +247,6 @@ public class ParkingFSM_Rownolegle : MonoBehaviour
             Debug.Log("Centrowanie");
         }
     }
-
     void Centering()
     {
         float diff = sensor.front - sensor.back;
