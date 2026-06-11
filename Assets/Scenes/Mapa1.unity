@@ -1257,7 +1257,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 918577886}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 77cabffbda9d87f49adc0357743b2f01, type: 3}
   m_Name: 
@@ -1305,12 +1305,14 @@ MonoBehaviour:
   driveSpeed: 3
   reverseSpeed: 1.5
   alignSpeed: 0.8
-  minLengthParallel: 6.5
   frontStopDist: 1.5
   backStopDist: 2
   sideWarnDist: 1.5
-  measuredLength: 0
   parkingRight: 1
+  skanujePrawe: 0
+  skanujeLewe: 0
+  miejsceZajetePrawe: 0
+  miejsceZajeteLewe: 0
 --- !u!114 &918577898
 MonoBehaviour:
   m_ObjectHideFlags: 0

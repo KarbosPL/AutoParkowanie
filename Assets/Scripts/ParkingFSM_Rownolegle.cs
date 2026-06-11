@@ -19,11 +19,14 @@ public class ParkingFSM_Rownolegle : MonoBehaviour
     public float sideWarnDist  = 1.5f;
 
     [Header("Debug")]
-    public bool parkingRight    = true;
-    public bool skanujeMiejsce  = false;
-    public bool miejsceZajete   = false;
+    public bool parkingRight       = true;
+    public bool skanujePrawe       = false;
+    public bool skanujeLewe        = false;
+    public bool miejsceZajetePrawe = false;
+    public bool miejsceZajeteLewe  = false;
 
-    private bool prevCameraLine = false;
+    private bool prevCameraLineR = false;
+    private bool prevCameraLineL = false;
     private float startAngle;
     private float targetAngle;
 
@@ -50,59 +53,88 @@ public class ParkingFSM_Rownolegle : MonoBehaviour
 
     void Driving()
     {
-        if (sensor.front < frontStopDist)
+        if (sensor.front < frontStopDist || sensor.frontLeft < frontStopDist || sensor.frontRight < frontStopDist)
         {
             rb.linearVelocity = Vector3.zero;
             return;
         }
         rb.linearVelocity = transform.forward * driveSpeed;
 
-        bool rightClear  = sensor.rightMiddle > 5f;
-        bool leftClear   = sensor.leftMiddle  > 5f;
-
         bool cameraLineR = sensor.cameraFR;
         bool cameraLineL = sensor.cameraFL;
-        bool cameraLine  = cameraLineR || cameraLineL;
-        bool nowaLinia   = !prevCameraLine && cameraLine;
+        bool nowaLiniaR  = !prevCameraLineR && cameraLineR;
+        bool nowaLiniaL  = !prevCameraLineL && cameraLineL;
 
-        if (nowaLinia)
+        // ── PRAWA STRONA ──────────────────────────────────
+        if (nowaLiniaR)
         {
-            if (!skanujeMiejsce)
+            if (!skanujePrawe)
             {
-                skanujeMiejsce = true;
-                miejsceZajete  = false;
-                parkingRight   = cameraLineR;
-                Debug.Log("Linia - start skanowania miejsca");
+                skanujePrawe       = true;
+                miejsceZajetePrawe = false;
+                Debug.Log("Prawa: start skanowania");
             }
             else
             {
-                if (!miejsceZajete)
+                if (!miejsceZajetePrawe)
                 {
-                    Debug.Log("Miejsce WOLNE - parkuję!");
+                    Debug.Log("Prawa: miejsce WOLNE - parkuję!");
+                    parkingRight = true;
                     currentState = State.Positioning;
+                    return;
                 }
                 else
                 {
-                    miejsceZajete  = false;
-                    parkingRight   = cameraLineR;
-                    Debug.Log("Miejsce zajęte - szukam dalej");
+                    miejsceZajetePrawe = false;
+                    Debug.Log("Prawa: zajęte - szukam dalej");
                 }
             }
         }
 
-        if (skanujeMiejsce)
+        if (skanujePrawe && sensor.rightMiddle < 5f)
         {
-            bool przeszkodaPrawa = !rightClear && parkingRight;
-            bool przeszkodaLewa  = !leftClear  && !parkingRight;
+            miejsceZajetePrawe = true;
+        }
 
-            if (przeszkodaPrawa || przeszkodaLewa)
+        if (sensor.rightMiddle < 3f)
+            skanujePrawe = false;
+
+        // ── LEWA STRONA ───────────────────────────────────
+        if (nowaLiniaL)
+        {
+            if (!skanujeLewe)
             {
-                miejsceZajete = true;
-                Debug.Log("Czujnik: miejsce zajęte!");
+                skanujeLewe       = true;
+                miejsceZajeteLewe = false;
+                Debug.Log("Lewa: start skanowania");
+            }
+            else
+            {
+                if (!miejsceZajeteLewe)
+                {
+                    Debug.Log("Lewa: miejsce WOLNE - parkuję!");
+                    parkingRight = false;
+                    currentState = State.Positioning;
+                    return;
+                }
+                else
+                {
+                    miejsceZajeteLewe = false;
+                    Debug.Log("Lewa: zajęte - szukam dalej");
+                }
             }
         }
 
-        prevCameraLine = cameraLine;
+        if (skanujeLewe && sensor.leftMiddle < 5f)
+        {
+            miejsceZajeteLewe = true;
+        }
+
+        if (sensor.leftMiddle < 3f)
+            skanujeLewe = false;
+
+        prevCameraLineR = cameraLineR;
+        prevCameraLineL = cameraLineL;
     }
 
     void Positioning()
@@ -110,11 +142,7 @@ public class ParkingFSM_Rownolegle : MonoBehaviour
         if (sensor.front < frontStopDist) { rb.linearVelocity = Vector3.zero; return; }
         rb.linearVelocity = transform.forward * driveSpeed;
 
-        //float middleSensor = parkingRight ? sensor.rightMiddle : sensor.leftMiddle;
-        //if (middleSensor < 3.5f)
-        bool cameraLineR = sensor.cameraBR;
-        bool cameraLineL = sensor.cameraBL;
-        bool cameraLine  = cameraLineR || cameraLineL;
+        bool cameraLine = parkingRight ? sensor.cameraBR : sensor.cameraBL;
         if (cameraLine)
         {
             rb.linearVelocity = Vector3.zero;
@@ -155,16 +183,47 @@ public class ParkingFSM_Rownolegle : MonoBehaviour
         }
     }
 
+    // void ParaLeft1()
+    // {
+    //     if (BackObstacleCheck()) return;
+    //     float diff = Mathf.DeltaAngle(transform.eulerAngles.y, targetAngle);
+    //     rb.linearVelocity = -transform.forward * reverseSpeed;
+    //     if (Mathf.Abs(diff) > 0.2f)
+    //         rb.MoveRotation(rb.rotation * Quaternion.Euler(0, -Mathf.Clamp(diff, -40f, 40f) * Time.fixedDeltaTime, 0));
+    //     else
+    //     {
+    //         targetAngle  = startAngle;
+    //         currentState = State.ParaLeft2;
+    //         Debug.Log("Para lewo faza 2");
+    //     }
+    // }
+
+    // void ParaLeft2()
+    // {
+    //     if (BackObstacleCheck()) return;
+    //     float diff = Mathf.DeltaAngle(transform.eulerAngles.y, targetAngle);
+    //     rb.linearVelocity = -transform.forward * reverseSpeed;
+    //     if (Mathf.Abs(diff) > 3f)
+    //         rb.MoveRotation(rb.rotation * Quaternion.Euler(0, -Mathf.Clamp(diff, -40f, 40f) * Time.fixedDeltaTime, 0));
+    //     else
+    //     {
+    //         rb.linearVelocity = Vector3.zero;
+    //         currentState = State.Centering;
+    //         Debug.Log("Centrowanie");
+    //     }
+    // }
     void ParaLeft1()
     {
         if (BackObstacleCheck()) return;
+        
         float diff = Mathf.DeltaAngle(transform.eulerAngles.y, targetAngle);
         rb.linearVelocity = -transform.forward * reverseSpeed;
+        
         if (Mathf.Abs(diff) > 0.2f)
-            rb.MoveRotation(rb.rotation * Quaternion.Euler(0, -Mathf.Clamp(diff, -40f, 40f) * Time.fixedDeltaTime, 0));
+            rb.MoveRotation(rb.rotation * Quaternion.Euler(0, Mathf.Clamp(diff, -40f, 40f) * Time.fixedDeltaTime, 0));
         else
         {
-            targetAngle  = startAngle;
+            targetAngle = startAngle;
             currentState = State.ParaLeft2;
             Debug.Log("Para lewo faza 2");
         }
@@ -173,10 +232,12 @@ public class ParkingFSM_Rownolegle : MonoBehaviour
     void ParaLeft2()
     {
         if (BackObstacleCheck()) return;
+        
         float diff = Mathf.DeltaAngle(transform.eulerAngles.y, targetAngle);
         rb.linearVelocity = -transform.forward * reverseSpeed;
+        
         if (Mathf.Abs(diff) > 3f)
-            rb.MoveRotation(rb.rotation * Quaternion.Euler(0, -Mathf.Clamp(diff, -40f, 40f) * Time.fixedDeltaTime, 0));
+            rb.MoveRotation(rb.rotation * Quaternion.Euler(0, Mathf.Clamp(diff, -40f, 40f) * Time.fixedDeltaTime, 0));
         else
         {
             rb.linearVelocity = Vector3.zero;
@@ -188,7 +249,7 @@ public class ParkingFSM_Rownolegle : MonoBehaviour
     void Centering()
     {
         float diff = sensor.front - sensor.back;
-        if (Mathf.Abs(diff) > 0.4f)
+        if (Mathf.Abs(diff) >0.2f)
             rb.linearVelocity = transform.forward * (diff > 0 ? 1f : -1f) * alignSpeed;
         else
         {
@@ -202,7 +263,7 @@ public class ParkingFSM_Rownolegle : MonoBehaviour
 
     bool BackObstacleCheck()
     {
-        if (sensor.back     < backStopDist ||
+        if (sensor.back      < backStopDist ||
             sensor.backLeft  < sideWarnDist ||
             sensor.backRight < sideWarnDist)
         {
