@@ -30,14 +30,11 @@ public class ParkingFSM_Rownolegle : MonoBehaviour
     private float startAngle;
     private float targetAngle;
     
-
     void Start()
     {
         rb     = GetComponent<Rigidbody>();
         sensor = GetComponent<ParkingSensor>();
     }
-
-
     void FixedUpdate()
     {
         switch (currentState)
