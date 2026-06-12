@@ -248,6 +248,7 @@ GameObject:
   - component: {fileID: 328984483}
   - component: {fileID: 328984481}
   - component: {fileID: 328984482}
+  - component: {fileID: 328984484}
   m_Layer: 0
   m_Name: Plane
   m_TagString: Ground
@@ -409,6 +410,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18595e10817a73941a7813be04895cfa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ScenaMapa2
+--- !u!114 &328984484
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 328984473}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7dad6cff2e5a064e8649b1f69c1d54b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ScenaMapa3
 --- !u!1 &330585543
 GameObject:
   m_ObjectHideFlags: 0
@@ -1076,6 +1089,7 @@ GameObject:
   - component: {fileID: 918577898}
   - component: {fileID: 918577897}
   - component: {fileID: 918577899}
+  - component: {fileID: 918577900}
   m_Layer: 0
   m_Name: AutoAgent
   m_TagString: Untagged
@@ -1288,15 +1302,17 @@ MonoBehaviour:
   currentState: 0
   driveSpeed: 3
   reverseSpeed: 1.5
-  minDepthPerp: 4.5
-  minLengthPerp: 2.8
-  perpDepth: 5.5
+  alignSpeed: 0.8
   frontStopDist: 1.5
   backStopDist: 2
   sideWarnDist: 1.5
-  measuredLength: 0
-  measuredDepth: 0
+  perpDepth: 5.5
+  earlyTurnOffset: 2
   parkingRight: 1
+  skanujePrawe: 0
+  skanujeLewe: 0
+  miejsceZajetePrawe: 0
+  miejsceZajeteLewe: 0
 --- !u!114 &918577899
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1309,6 +1325,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7375c094d0906d345a4e941ac32849ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WheelVisuals
+--- !u!114 &918577900
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 918577886}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2712b12e96c639c428649edd302a3969, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ParkingFSM_Skosnie
+  currentState: 0
+  driveSpeed: 3
+  reverseSpeed: 1.5
+  alignSpeed: 0.8
+  frontStopDist: 1.5
+  backStopDist: 2
+  sideWarnDist: 1.5
+  skosDepth: 8
+  parkingRight: 1
+  skanujePrawe: 0
+  skanujeLewe: 0
+  miejsceZajetePrawe: 0
+  miejsceZajeteLewe: 0
 --- !u!1 &1190387020
 GameObject:
   m_ObjectHideFlags: 0
