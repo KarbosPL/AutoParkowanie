@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class ParkingFSM_Prostopadle : MonoBehaviour
 {
-    public enum State { Driving, Positioning, PerpRight, PerpLeft, Done }
+    public enum State { Driving, Positioning, PerpRight, PerpLeft, Centering, Done }
     public State currentState = State.Driving;
 
     private Rigidbody rb;
@@ -11,29 +11,31 @@ public class ParkingFSM_Prostopadle : MonoBehaviour
     [Header("Prędkości")]
     public float driveSpeed   = 3f;
     public float reverseSpeed = 1.5f;
-
-    [Header("Progi")]
-    public float minDepthPerp  = 4.5f;
-    public float minLengthPerp = 2.8f;
-    public float perpDepth     = 5.5f;
+    public float alignSpeed   = 0.8f;
 
     [Header("Bezpieczeństwo")]
     public float frontStopDist = 1.5f;
     public float backStopDist  = 2.0f;
     public float sideWarnDist  = 1.5f;
 
-    [Header("Debug")]
-    public float measuredLength = 0f;
-    public float measuredDepth  = 0f;
-    public bool  parkingRight   = true;
+    [Header("Manewr")]
+    public float perpDepth = 7.5f;
+    public float earlyTurnOffset = 2f; // O ile wcześniej zacząć manewr (w jednostkach)
 
+    [Header("Debug")]
+    public bool parkingRight       = true;
+    public bool skanujePrawe       = false;
+    public bool skanujeLewe        = false;
+    public bool miejsceZajetePrawe = false;
+    public bool miejsceZajeteLewe  = false;
+
+    private bool prevCameraLineR = false;
+    private bool prevCameraLineL = false;
     private float startAngle;
     private float targetAngle;
-    private Vector3 gapStartPos;
     private Vector3 perpStartPos;
-    private bool inGap          = false;
-    private bool prevRightClear = false;
-    private bool prevLeftClear  = false;
+    private bool positionReached = false;
+    private Vector3 earlyTurnPos;
 
     void Start()
     {
@@ -49,88 +51,115 @@ public class ParkingFSM_Prostopadle : MonoBehaviour
             case State.Positioning: Positioning(); break;
             case State.PerpRight:   PerpRight();   break;
             case State.PerpLeft:    PerpLeft();    break;
+            case State.Centering:   Centering();   break;
             case State.Done:        Done();        break;
         }
     }
 
     void Driving()
     {
-        if (sensor.front < frontStopDist) { rb.linearVelocity = Vector3.zero; return; }
+        if (sensor.front < frontStopDist || sensor.frontLeft < frontStopDist || sensor.frontRight < frontStopDist)
+        {
+            rb.linearVelocity = Vector3.zero;
+            return;
+        }
         rb.linearVelocity = transform.forward * driveSpeed;
 
-        bool rightClear = sensor.rightMiddle > 3.5f;
-        bool leftClear  = sensor.leftMiddle  > 3.5f;
+        bool cameraLineR = sensor.cameraFR;
+        bool cameraLineL = sensor.cameraFL;
+        bool nowaLiniaR  = !prevCameraLineR && cameraLineR;
+        bool nowaLiniaL  = !prevCameraLineL && cameraLineL;
 
-        if (!prevRightClear && rightClear)
+        // ── PRAWA STRONA ──────────────────────────────────
+        if (nowaLiniaR)
         {
-            gapStartPos = transform.position;
-            inGap = true;
-            parkingRight = true;
-        }
-        if (!prevLeftClear && leftClear && !inGap)
-        {
-            gapStartPos = transform.position;
-            inGap = true;
-            parkingRight = false;
-        }
-
-        if (inGap)
-        {
-            bool stillClear = parkingRight ? rightClear : leftClear;
-            if (!stillClear)
+            if (!skanujePrawe)
             {
-                inGap = false;
-                MeasureAndDecide();
+                skanujePrawe       = true;
+                miejsceZajetePrawe = false;
+                Debug.Log("Prawa: start skanowania");
+            }
+            else
+            {
+                Debug.Log("Prawa: miejsce - parkuję!");
+                parkingRight = false;
+                currentState = State.Positioning;
+                positionReached = false;
+                return;
             }
         }
 
-        prevRightClear = rightClear;
-        prevLeftClear  = leftClear;
-    }
+        if (skanujePrawe && sensor.rightMiddle < 5f)
+            miejsceZajetePrawe = true;
 
-    void MeasureAndDecide()
-    {
-        Vector3 toHere = transform.position - gapStartPos;
-        measuredLength = Vector3.Dot(toHere, transform.forward);
+        if (sensor.rightMiddle < 3f)
+            skanujePrawe = false;
 
-        Vector3 midPoint = gapStartPos + transform.forward * (measuredLength / 2f);
-        Vector3 sideDir  = parkingRight ? transform.right : -transform.right;
-
-        RaycastHit hit;
-        measuredDepth = Physics.Raycast(midPoint, sideDir, out hit, 15f) ? hit.distance : 15f;
-
-        Debug.Log($"Luka prostopadła: dł={measuredLength:F1}m głęb={measuredDepth:F1}m strona={(parkingRight ? "prawa" : "lewa")}");
-
-        if (measuredDepth >= minDepthPerp && measuredLength >= minLengthPerp)
+        // ── LEWA STRONA ───────────────────────────────────
+        if (nowaLiniaL)
         {
-            currentState = State.Positioning;
-            Debug.Log("Decyzja: PROSTOPADŁE");
+            if (!skanujeLewe)
+            {
+                skanujeLewe       = true;
+                miejsceZajeteLewe = false;
+                Debug.Log("Lewa: start skanowania");
+            }
+            else
+            {
+                Debug.Log("Lewa: miejsce - parkuję!");
+                parkingRight = true;
+                currentState = State.Positioning;
+                positionReached = false;
+                return;
+            }
         }
-        else
-        {
-            Debug.Log("Luka za mała, szukam dalej...");
-        }
+
+        if (skanujeLewe && sensor.leftMiddle < 5f)
+            miejsceZajeteLewe = true;
+
+        if (sensor.leftMiddle < 3f)
+            skanujeLewe = false;
+
+        prevCameraLineR = cameraLineR;
+        prevCameraLineL = cameraLineL;
     }
 
     void Positioning()
     {
-        if (sensor.front < frontStopDist) { rb.linearVelocity = Vector3.zero; return; }
+        if (sensor.front < frontStopDist) 
+        { 
+            rb.linearVelocity = Vector3.zero; 
+            return; 
+        }
+        
         rb.linearVelocity = transform.forward * driveSpeed;
 
-        float middleSensor = parkingRight ? sensor.rightMiddle : sensor.leftMiddle;
-        if (middleSensor < 3.5f)
+        // Używamy przedniej kamery do wykrycia linii i robimy wcześniejszy skręt
+        bool frontLine = parkingRight ? sensor.cameraFR : sensor.cameraFL;
+        
+        if (frontLine && !positionReached)
+        {
+            // Wykryto linię - zapisz pozycję do wcześniejszego skrętu
+            earlyTurnPos = transform.position + transform.forward * earlyTurnOffset;
+            positionReached = true;
+            Debug.Log($"Wykryto linię, skręt nastąpi za {earlyTurnOffset} jednostki");
+        }
+        
+        // Sprawdź czy dojechaliśmy do pozycji wczesnego skrętu
+        if (positionReached && Vector3.Distance(transform.position, earlyTurnPos) < 0.1f)
         {
             rb.linearVelocity = Vector3.zero;
             startAngle   = transform.eulerAngles.y;
-            perpStartPos = transform.position;
             targetAngle  = parkingRight ? startAngle + 90f : startAngle - 90f;
+            perpStartPos = transform.position;
             currentState = parkingRight ? State.PerpRight : State.PerpLeft;
-            Debug.Log("Zaczynam manewr prostopadły!");
+            Debug.Log($"Zaczynam manewr prostopadły WCZEŚNIEJ o {earlyTurnOffset}!");
         }
     }
 
     void PerpRight()
     {
+        if (BackObstacleCheck()) return;
         float diff = Mathf.DeltaAngle(transform.eulerAngles.y, targetAngle);
         rb.linearVelocity = -transform.forward * reverseSpeed;
 
@@ -143,14 +172,15 @@ public class ParkingFSM_Prostopadle : MonoBehaviour
             else
             {
                 rb.linearVelocity = Vector3.zero;
-                currentState = State.Done;
-                Debug.Log("Zaparkowano prostopadle!");
+                currentState = State.Centering;
+                Debug.Log("Centrowanie");
             }
         }
     }
 
     void PerpLeft()
     {
+        if (BackObstacleCheck()) return;
         float diff = Mathf.DeltaAngle(transform.eulerAngles.y, targetAngle);
         rb.linearVelocity = -transform.forward * reverseSpeed;
 
@@ -163,11 +193,37 @@ public class ParkingFSM_Prostopadle : MonoBehaviour
             else
             {
                 rb.linearVelocity = Vector3.zero;
-                currentState = State.Done;
-                Debug.Log("Zaparkowano prostopadle!");
+                currentState = State.Centering;
+                Debug.Log("Centrowanie");
             }
         }
     }
 
+    void Centering()
+    {
+        float diff = sensor.front - sensor.back;
+        if (Mathf.Abs(diff) > 0.2f)
+            rb.linearVelocity = transform.forward * (diff > 0 ? 1f : -1f) * alignSpeed;
+        else
+        {
+            rb.linearVelocity = Vector3.zero;
+            currentState = State.Done;
+            Debug.Log("Zaparkowano prostopadle!");
+        }
+    }
+
     void Done() => rb.linearVelocity = Vector3.zero;
+
+    bool BackObstacleCheck()
+    {
+        if (sensor.back      < backStopDist ||
+            sensor.backLeft  < sideWarnDist ||
+            sensor.backRight < sideWarnDist)
+        {
+            rb.linearVelocity = transform.forward * 0.3f;
+            Debug.Log("Korekta - za blisko z tyłu");
+            return true;
+        }
+        return false;
+    }
 }

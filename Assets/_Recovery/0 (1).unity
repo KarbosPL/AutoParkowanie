@@ -1288,15 +1288,16 @@ MonoBehaviour:
   currentState: 0
   driveSpeed: 3
   reverseSpeed: 1.5
-  minDepthPerp: 4.5
-  minLengthPerp: 2.8
-  perpDepth: 5.5
+  alignSpeed: 0.8
   frontStopDist: 1.5
   backStopDist: 2
   sideWarnDist: 1.5
-  measuredLength: 0
-  measuredDepth: 0
+  perpDepth: 5.5
   parkingRight: 1
+  skanujePrawe: 0
+  skanujeLewe: 0
+  miejsceZajetePrawe: 0
+  miejsceZajeteLewe: 0
 --- !u!114 &918577899
 MonoBehaviour:
   m_ObjectHideFlags: 0

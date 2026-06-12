@@ -19,38 +19,35 @@ public class ParkingTexture2 : MonoBehaviour
         int W = 2048, H = 2048;
         Texture2D tex = new Texture2D(W, H);
 
-        Color asfaltAlejka  = new Color(0.35f, 0.35f, 0.35f);  // Bardziej szarawy
+        Color asfaltAlejka  = new Color(0.35f, 0.35f, 0.35f);
         Color asfaltParking = new Color(0.15f, 0.15f, 0.15f);
         Color linia         = Color.white;
 
         // Wypełnij całość asfaltem parkingowym
         Fill(tex, 0, 0, W, H, asfaltParking);
 
-        // Alejka: Unity X = -2.5 do 2.5
+        // Alejka: Unity X = -2.5 do 2.5 (BEZ ZMIAN)
         int aleL = ToTexX(W, -2.5f);
         int aleR = ToTexX(W, 2.5f);
         Fill(tex, aleL, 0, aleR - aleL, H, asfaltAlejka);
 
         // === PARKING PROSTOPADŁY ===
         
-        // Prawa strona parkingu (X: 2.5 do 12)
+        // Prawa strona parkingu (X: 2.5 do 12) (BEZ ZMIAN)
         int prawaStart = ToTexX(W, 2.5f);
         int prawaKoniec = ToTexX(W, 12f);
         
-        // Lewa strona parkingu (X: -12 do -2.5)
+        // Lewa strona parkingu (X: -12 do -2.5) (BEZ ZMIAN)
         int lewaStart = ToTexX(W, -12f);
         int lewaKoniec = ToTexX(W, -2.5f);
         
-        // Linie zewnętrzne parkingów (tylko zewnętrzne krawędzie)
+        // Linie zewnętrzne parkingów
         DrawV(tex, ToTexX(W, 12f), 0, H, linia, 4);
         DrawV(tex, ToTexX(W, -12f), 0, H, linia, 4);
         
         // === MIEJSCA PARKINGOWE ===
-        // Miejsca co 4 jednostki w osi Z (szerokość miejsca = 4)
-        float[] miejscaZ = { -44f, -40f, -36f, -32f, -28f, -24f, -20f, -16f, -12f, -8f, -4f, 0f, 4f, 8f, 12f, 16f, 20f, 24f, 28f, 32f, 36f, 40f, 44f };
-        
-        // Szerokość miejsca parkingowego = 4
-        float miejsceSzerokosc = 4f;
+        // Miejsca co 6 jednostek w osi Z (szerokość miejsca = 6)
+        float[] miejscaZ = { -45f, -39f, -33f, -27f, -21f, -15f, -9f, -3f, 3f, 9f, 15f, 21f, 27f, 33f, 39f, 45f };
         
         foreach (float z in miejscaZ)
         {
@@ -64,7 +61,7 @@ public class ParkingTexture2 : MonoBehaviour
         }
         
         // Linie poprzeczne na końcach parkingów
-        float[] konceParkingu = { -46f, 46f };
+        float[] konceParkingu = { -48f, 48f };
         
         foreach (float z in konceParkingu)
         {
@@ -75,6 +72,7 @@ public class ParkingTexture2 : MonoBehaviour
 
         tex.Apply();
         parkingTexture = tex;
+        ParkingTexture1.parkingTexture = tex; 
         return tex;
     }
 
@@ -83,7 +81,7 @@ public class ParkingTexture2 : MonoBehaviour
 
     void Fill(Texture2D tex, int x, int y, int w, int h, Color c)
     {
-        for (int px = x; px < x + w && px < tex.width;  px++)
+        for (int px = x; px < x + w && px < tex.width; px++)
         for (int py = y; py < y + h && py < tex.height; py++)
             tex.SetPixel(px, py, c);
     }
