@@ -89,10 +89,10 @@ public class ParkingFSM_Prostopadle : MonoBehaviour
             }
         }
 
-        if (skanujePrawe && sensor.rightMiddle < 5f)
+        if (skanujePrawe && sensor.rightMiddle < 7f)
             miejsceZajetePrawe = true;
 
-        if (sensor.rightMiddle < 3f)
+        if (sensor.rightMiddle < 5f)
             skanujePrawe = false;
 
         // ── LEWA STRONA ───────────────────────────────────
@@ -114,10 +114,10 @@ public class ParkingFSM_Prostopadle : MonoBehaviour
             }
         }
 
-        if (skanujeLewe && sensor.leftMiddle < 5f)
+        if (skanujeLewe && sensor.leftMiddle < 7f)
             miejsceZajeteLewe = true;
 
-        if (sensor.leftMiddle < 3f)
+        if (sensor.leftMiddle < 5f)
             skanujeLewe = false;
 
         prevCameraLineR = cameraLineR;
