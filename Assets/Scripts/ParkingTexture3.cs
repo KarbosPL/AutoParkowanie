@@ -31,61 +31,73 @@ public class ParkingTexture3 : MonoBehaviour
         int aleR = ToTexX(W, 2.5f);
         Fill(tex, aleL, 0, aleR - aleL, H, asfaltAlejka);
 
-        // === PARKING SKOŚNY (45 stopni) ===
+        // === PARKING SKOŚNY (OSTRY KĄT 75 STOPNI) ===
         
-        // Prawa strona parkingu (X: 2.5 do 14)
-        int prawaStart = ToTexX(W, 3.5f);
-        int prawaKoniec = ToTexX(W, 14f);
+        // Prawa strona parkingu (X od 3 do 11)
+        int prawaStart = ToTexX(W, 3f);
+        int prawaKoniec = ToTexX(W, 11f);
         
-        // Lewa strona parkingu (X: -14 do -2.5)
-        int lewaStart = ToTexX(W, -14f);
-        int lewaKoniec = ToTexX(W, -3.5f);
-        
-        // Linie zewnętrzne parkingów
-        DrawV(tex, ToTexX(W, 14f), 0, H, linia, 4);
-        DrawV(tex, ToTexX(W, -14f), 0, H, linia, 4);
+        // Lewa strona parkingu (X od -11 do -3)
+        int lewaStart = ToTexX(W, -11f);
+        int lewaKoniec = ToTexX(W, -3f);
         
         // === MIEJSCA PARKINGOWE SKOŚNE ===
-        // Miejsca co 5 jednostek w osi Z
+        // Co 5 jednostek w osi Z
         float[] miejscaZ = { -45f, -40f, -35f, -30f, -25f, -20f, -15f, -10f, -5f, 0f, 5f, 10f, 15f, 20f, 25f, 30f, 35f, 40f, 45f };
+        
+        // OSTY KĄT - 75 stopni (prawie prostopadły)
+        float skosAngle = 75f;
         
         foreach (float z in miejscaZ)
         {
             int texY = ToTexY(H, z);
             
-            // Rysuj linie skośne (45 stopni)
-            DrawDiagonal(tex, texY, prawaStart, prawaKoniec, linia, 4, true);  // prawa strona - skos w prawo
-            DrawDiagonal(tex, texY, lewaStart, lewaKoniec, linia, 4, false); // lewa strona - skos w lewo
+            // Prawa strona - skos w prawo
+            DrawDiagonal(tex, texY, prawaStart, prawaKoniec, linia, 4, skosAngle);
+            
+            // Lewa strona - skos w lewo
+            DrawDiagonal(tex, texY, lewaStart, lewaKoniec, linia, 4, -skosAngle);
         }
         
-        // Linie poprzeczne na końcach parkingów
-        float[] konceParkingu = { -47f, 47f };
+        // Linie zewnętrzne na krańcach parkingów
+        DrawV(tex, ToTexX(W, 11f), 0, H, linia, 4);
+        DrawV(tex, ToTexX(W, -11f), 0, H, linia, 4);
         
-        foreach (float z in konceParkingu)
-        {
-            int texY = ToTexY(H, z);
-            DrawH(tex, texY, prawaStart, prawaKoniec, linia, 4);
-            DrawH(tex, texY, lewaStart, lewaKoniec, linia, 4);
-        }
+        // Linie poprzeczne na końcach (Z = -47 i 47)
+        int koniecDolny = ToTexY(H, -47f);
+        int koniecGorny = ToTexY(H, 47f);
+        DrawH(tex, koniecDolny, prawaStart, prawaKoniec, linia, 4);
+        DrawH(tex, koniecDolny, lewaStart, lewaKoniec, linia, 4);
+        DrawH(tex, koniecGorny, prawaStart, prawaKoniec, linia, 4);
+        DrawH(tex, koniecGorny, lewaStart, lewaKoniec, linia, 4);
 
         tex.Apply();
         parkingTexture = tex;
+        ParkingTexture1.parkingTexture = tex;  
         return tex;
     }
 
-    void DrawDiagonal(Texture2D tex, int y, int xStart, int xEnd, Color c, int thickness, bool rightSide)
+    void DrawDiagonal(Texture2D tex, int y, int xStart, int xEnd, Color c, int thickness, float angle)
     {
+        float tanAngle = Mathf.Tan(angle * Mathf.Deg2Rad);
         int width = xEnd - xStart;
+        
         for (int px = xStart; px < xEnd; px++)
         {
-            // Oblicz przesunięcie dla skosu 45 stopni
-            int offset = rightSide ? (px - xStart) : (xEnd - px - 1);
-            int py = y - offset / 2;
+            // Oblicz przesunięcie w Y na podstawie X
+            float t = (float)(px - xStart) / width;
+            int offset = Mathf.RoundToInt(t * 50f * tanAngle);
             
-            for (int t = -thickness/2; t <= thickness/2; t++)
+            int py = y - offset;
+            
+            for (int t2 = -thickness/2; t2 <= thickness/2; t2++)
             {
-                int finalPy = Mathf.Clamp(py + t, 0, tex.height - 1);
-                tex.SetPixel(px, finalPy, c);
+                for (int t3 = -thickness/2; t3 <= thickness/2; t3++)
+                {
+                    int finalX = Mathf.Clamp(px + t2, 0, tex.width - 1);
+                    int finalY = Mathf.Clamp(py + t3, 0, tex.height - 1);
+                    tex.SetPixel(finalX, finalY, c);
+                }
             }
         }
     }

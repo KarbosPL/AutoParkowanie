@@ -58,14 +58,14 @@ public class ScenaMapa3 : MonoBehaviour
             // Przesunięcie o połowę szerokości miejsca (2.5f)
             float z = miejscaZ[i] - 2.5f;
             
-            // Prawa strona - kąt 57 stopni (w prawo)
+            // Prawa strona - ZWIĘKSZONE X o 0,5 (z 6f na 6.5f)
             Color kolorPrawo = kolory[licznikPrawo % kolory.Length];
-            CreateCar($"AutoZaparkowane_Prawa_{i}", new Vector3(7f, 0.5f, z), kolorPrawo, 57f);
+            CreateCar($"AutoZaparkowane_Prawa_{i}", new Vector3(6.5f, 0.5f, z), kolorPrawo, 45f);
             licznikPrawo++;
             
-            // Lewa strona - kąt -57 stopni (w lewo)
+            // Lewa strona - ZWIĘKSZONE X o 0,5 (z -6f na -6.5f)
             Color kolorLewo = kolory[licznikLewo % kolory.Length];
-            CreateCar($"AutoZaparkowane_Lewa_{i}", new Vector3(-7f, 0.5f, z), kolorLewo, -57f);
+            CreateCar($"AutoZaparkowane_Lewa_{i}", new Vector3(-6.5f, 0.5f, z), kolorLewo, -45f);
             licznikLewo++;
         }
         

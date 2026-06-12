@@ -13,6 +13,7 @@ public class ScenaMapa2 : MonoBehaviour
 
             agent.GetComponent<ParkingFSM_Rownolegle>().enabled = false;
             agent.GetComponent<ParkingFSM_Prostopadle>().enabled = true;   
+           // agent.GetComponent<ParkingFSM_Skosnie>().enabled = false;
         }
 
         // Miejsca parkingowe co 6 jednostek od -45 do 45
