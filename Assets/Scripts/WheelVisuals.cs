@@ -3,7 +3,11 @@ using UnityEngine;
 public class WheelVisuals : MonoBehaviour
 {
     private Rigidbody rb;
-    private ParkingFSM_Rownolegle fsm;
+    
+    // Referencje do różnych FSM
+    private ParkingFSM_Rownolegle fsmRownolegle;
+    private ParkingFSM_Prostopadle fsmProstopadle;
+    private ParkingFSM_Skosnie fsmSkosnie;
 
     private Transform wheelFL, wheelFR, wheelRL, wheelRR;
     private Transform wheelFL_visual, wheelFR_visual, wheelRL_visual, wheelRR_visual;
@@ -11,10 +15,14 @@ public class WheelVisuals : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-        fsm = GetComponent<ParkingFSM_Rownolegle>();
+        
+        // Pobierz wszystkie FSM (którekolwiek jest aktywne)
+        fsmRownolegle = GetComponent<ParkingFSM_Rownolegle>();
+        fsmProstopadle = GetComponent<ParkingFSM_Prostopadle>();
+        fsmSkosnie = GetComponent<ParkingFSM_Skosnie>();
 
-        if (fsm == null)
-            Debug.LogError("ParkingFSM_Rownolegle nie znaleziony na obiekcie!");
+        if (fsmRownolegle == null && fsmProstopadle == null && fsmSkosnie == null)
+            Debug.LogError("Żaden FSM nie znaleziony na obiekcie!");
 
         // Tworzenie kół
         CreateWheel("Wheel_FL", new Vector3(-0.5f, -0.15f, 0.4f), out wheelFL, out wheelFL_visual);
@@ -82,30 +90,62 @@ public class WheelVisuals : MonoBehaviour
 
     float GetSteerAngle()
     {
-        if (fsm == null) return 0f;
-
-        // Kąty skrętu dla różnych stanów parkowania
-        switch (fsm.currentState)
+        // === PARKOWANIE RÓWNOLEGŁE ===
+        if (fsmRownolegle != null && fsmRownolegle.enabled)
         {
-            // Parkowanie równoległe - prawa strona (faza 1 - skręt w prawo)
-            case ParkingFSM_Rownolegle.State.ParaRight1:
-                return -35f;
-
-            // Parkowanie równoległe - prawa strona (faza 2 - wyrównanie)
-            case ParkingFSM_Rownolegle.State.ParaRight2:
-                return 25f;
-
-            // Parkowanie równoległe - lewa strona (faza 1 - skręt w lewo)
-            case ParkingFSM_Rownolegle.State.ParaLeft1:
-                return 35f;
-
-            // Parkowanie równoległe - lewa strona (faza 2 - wyrównanie)
-            case ParkingFSM_Rownolegle.State.ParaLeft2:
-                return -25f;
-
-            // Pozostałe stany - bez skrętu
-            default:
-                return 0f;
+            switch (fsmRownolegle.currentState)
+            {
+                case ParkingFSM_Rownolegle.State.ParaRight1:
+                    return 35f;   // Skręt w prawo
+                case ParkingFSM_Rownolegle.State.ParaRight2:
+                    return -25f;  // Wyrównanie
+                case ParkingFSM_Rownolegle.State.ParaLeft1:
+                    return -35f;  // Skręt w lewo
+                case ParkingFSM_Rownolegle.State.ParaLeft2:
+                    return 25f;   // Wyrównanie
+                default:
+                    return 0f;
+            }
         }
+        
+        // === PARKOWANIE PROSTOPADŁE ===
+        if (fsmProstopadle != null && fsmProstopadle.enabled)
+        {
+            switch (fsmProstopadle.currentState)
+            {
+                case ParkingFSM_Prostopadle.State.PerpRight:
+                    return 35f;   // Skręt w prawo
+                case ParkingFSM_Prostopadle.State.PerpLeft:
+                    return -35f;  // Skręt w lewo
+                case ParkingFSM_Prostopadle.State.Centering:
+                    // Podczas centrowania delikatne korekty
+                    float diff = 0f;
+                    if (fsmProstopadle != null)
+                    {
+                        // Możesz dodać logikę centrowania z FSM
+                    }
+                    return 0f;
+                default:
+                    return 0f;
+            }
+        }
+        
+        // === PARKOWANIE SKOŚNE ===
+        if (fsmSkosnie != null && fsmSkosnie.enabled)
+        {
+            switch (fsmSkosnie.currentState)
+            {
+                case ParkingFSM_Skosnie.State.SkosRight:
+                    return 35f;   // Skręt w prawo
+                case ParkingFSM_Skosnie.State.SkosLeft:
+                    return -35f;  // Skręt w lewo
+                case ParkingFSM_Skosnie.State.Centering:
+                    return 0f;
+                default:
+                    return 0f;
+            }
+        }
+
+        return 0f;
     }
 }
