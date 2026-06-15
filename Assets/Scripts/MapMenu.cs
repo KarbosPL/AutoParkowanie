@@ -11,6 +11,15 @@ public class MapMenu : MonoBehaviour
             PlayerPrefs.SetInt("selectedMap", 0);
             PlayerPrefs.SetInt("gameStarted", 1);
         }
+        
+        // WYŁĄCZ KAMERĘ NA STARCIE (w menu)
+        Camera mainCam = Camera.main;
+        if (mainCam != null)
+        {
+            Kamera kam = mainCam.GetComponent<Kamera>();
+            if (kam != null)
+                kam.enabled = false;
+        }
     }
 
     void OnGUI()

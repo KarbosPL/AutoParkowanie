@@ -52,29 +52,29 @@ public class ScenaMapa2 : MonoBehaviour
             licznikLewo++;
         }
         
-        // === ZAMIEŃ WYBRANE SAMOCHODY NA MAŁE PRZESZKODY (BLIŻEJ DROGI O 1.5f) ===
+        // === ZAMIEŃ WYBRANE SAMOCHODY NA MAŁE PRZESZKODY ===
         
-        // Usuń AutoZaparkowane_Lewa_3 (indeks 3) - przesuń bliżej drogi o 1.5f (z -5.5 na -4.0)
+        // Usuń AutoZaparkowane_Lewa_3 i zamień na przeszkodę
         GameObject lewa3 = GameObject.Find("AutoZaparkowane_Lewa_3");
         if (lewa3 != null)
         {
             Vector3 pos = lewa3.transform.position;
             Destroy(lewa3);
             CreateObstacle("FalszywaLuka_Lewa_3", new Vector3(-4.0f, 0.5f, pos.z), new Vector3(0.5f, 1f, 1.125f), new Color(0.5f, 0.5f, 0.5f));
-            Debug.Log("Zamieniono AutoZaparkowane_Lewa_3 na przeszkodę (bliżej drogi o 1.5f)");
+            Debug.Log("Zamieniono AutoZaparkowane_Lewa_3 na przeszkodę");
         }
         
-        // Usuń AutoZaparkowane_Prawa_4 (indeks 4) - przesuń bliżej drogi o 1.5f (z 5.5 na 4.0)
+        // Usuń AutoZaparkowane_Prawa_4 i zamień na przeszkodę
         GameObject prawa4 = GameObject.Find("AutoZaparkowane_Prawa_4");
         if (prawa4 != null)
         {
             Vector3 pos = prawa4.transform.position;
             Destroy(prawa4);
             CreateObstacle("FalszywaLuka_Prawa_4", new Vector3(4.0f, 0.5f, pos.z), new Vector3(0.5f, 1f, 1.125f), new Color(0.5f, 0.5f, 0.5f));
-            Debug.Log("Zamieniono AutoZaparkowane_Prawa_4 na przeszkodę (bliżej drogi o 1.5f)");
+            Debug.Log("Zamieniono AutoZaparkowane_Prawa_4 na przeszkodę");
         }
         
-        // === TYLKO USUŃ AutoZaparkowane_Prawa_8 - BEZ PRZESZKODY ===
+        // TYLKO USUŃ AutoZaparkowane_Prawa_8
         GameObject prawa8 = GameObject.Find("AutoZaparkowane_Prawa_8");
         if (prawa8 != null)
         {
@@ -82,12 +82,33 @@ public class ScenaMapa2 : MonoBehaviour
             Debug.Log("Usunięto AutoZaparkowane_Prawa_8");
         }
         
-        // Opcjonalnie - dodatkowa mała przeszkoda testowa
+        // Dodatkowa przeszkoda testowa
         CreateObstacle("FalszywaLuka", new Vector3(4.0f, 0.5f, -35f), new Vector3(0.5f, 1f, 1.125f), new Color(0.5f, 0.5f, 0.5f));
 
         GameObject planeObj = GameObject.Find("Plane");
         if (planeObj != null)
             planeObj.AddComponent<ParkingTexture2>();
+        
+        // === WŁĄCZ KAMERĘ PO STWORZENIU WSZYSTKIEGO ===
+        EnableCamera();
+    }
+    
+    void EnableCamera()
+    {
+        Camera mainCam = Camera.main;
+        if (mainCam != null)
+        {
+            Kamera kam = mainCam.GetComponent<Kamera>();
+            if (kam != null)
+            {
+                kam.enabled = true;
+                Debug.Log("Kamera włączona w ScenaMapa2");
+            }
+            else
+            {
+                Debug.LogWarning("Brak komponentu Kamera na Main Camera");
+            }
+        }
     }
 
     void CreateCar(string name, Vector3 pos, Color color, float rotationY)
