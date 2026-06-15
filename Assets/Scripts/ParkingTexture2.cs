@@ -26,18 +26,18 @@ public class ParkingTexture2 : MonoBehaviour
         // Wypełnij całość asfaltem parkingowym
         Fill(tex, 0, 0, W, H, asfaltParking);
 
-        // Alejka: Unity X = -2.5 do 2.5 (BEZ ZMIAN)
+        // Alejka: Unity X = -2.5 do 2.5
         int aleL = ToTexX(W, -2.5f);
         int aleR = ToTexX(W, 2.5f);
         Fill(tex, aleL, 0, aleR - aleL, H, asfaltAlejka);
 
         // === PARKING PROSTOPADŁY ===
         
-        // Prawa strona parkingu (X: 2.5 do 12) (BEZ ZMIAN)
+        // Prawa strona parkingu (X: 2.5 do 12)
         int prawaStart = ToTexX(W, 2.5f);
         int prawaKoniec = ToTexX(W, 12f);
         
-        // Lewa strona parkingu (X: -12 do -2.5) (BEZ ZMIAN)
+        // Lewa strona parkingu (X: -12 do -2.5)
         int lewaStart = ToTexX(W, -12f);
         int lewaKoniec = ToTexX(W, -2.5f);
         
@@ -46,8 +46,8 @@ public class ParkingTexture2 : MonoBehaviour
         DrawV(tex, ToTexX(W, -12f), 0, H, linia, 4);
         
         // === MIEJSCA PARKINGOWE ===
-        // Miejsca co 6 jednostek w osi Z (szerokość miejsca = 6)
-        float[] miejscaZ = { -45f, -39f, -33f, -27f, -21f, -15f, -9f, -3f, 3f, 9f, 15f, 21f, 27f, 33f, 39f, 45f };
+        // Miejsca co 7 jednostek w osi Z (szerokość miejsca = 7)
+        float[] miejscaZ = { -45f, -38f, -31f, -24f, -17f, -10f, -3f, 4f, 11f, 18f, 25f, 32f, 39f, 46f };
         
         foreach (float z in miejscaZ)
         {
@@ -61,7 +61,7 @@ public class ParkingTexture2 : MonoBehaviour
         }
         
         // Linie poprzeczne na końcach parkingów
-        float[] konceParkingu = { -48f, 48f };
+        float[] konceParkingu = { -48.5f, 49.5f };
         
         foreach (float z in konceParkingu)
         {

@@ -13,11 +13,10 @@ public class ScenaMapa2 : MonoBehaviour
 
             agent.GetComponent<ParkingFSM_Rownolegle>().enabled = false;
             agent.GetComponent<ParkingFSM_Prostopadle>().enabled = true;   
-           // agent.GetComponent<ParkingFSM_Skosnie>().enabled = false;
         }
 
-        // Miejsca parkingowe co 6 jednostek od -45 do 45
-        float[] miejscaZ = { -45f, -39f, -33f, -27f, -21f, -15f, -9f, -3f, 3f, 9f, 15f, 21f, 27f, 33f, 39f, 45f };
+        // Miejsca parkingowe co 7 jednostek od -45 do 46
+        float[] miejscaZ = { -46f, -39f, -32f, -25f, -18f, -11f, -4f, 3f, 10f, 17f, 24f, 31f, 38f, 45f };
         
         Color[] kolory = new Color[]
         {
@@ -36,23 +35,55 @@ public class ScenaMapa2 : MonoBehaviour
         int licznikPrawo = 0;
         int licznikLewo = 0;
         
+        // Najpierw wygeneruj wszystkie samochody
         for (int i = 0; i < miejscaZ.Length; i++)
         {
-            // Przesunięcie o połowę szerokości miejsca (3f)
-            float z = miejscaZ[i] - 3f;
+            // Przesunięcie o połowę szerokości miejsca (3.5f)
+            float z = miejscaZ[i] - 3.5f;
             
-            // Prawa strona - PRZESUNIĘTE BLIŻEJ DROGI O 1 (X = 5f zamiast 6f)
+            // Prawa strona
             Color kolorPrawo = kolory[licznikPrawo % kolory.Length];
-            CreateCar($"AutoZaparkowane_Prawa_{i}", new Vector3(5f, 0.5f, z), kolorPrawo, 90f);
+            CreateCar($"AutoZaparkowane_Prawa_{i}", new Vector3(5.5f, 0.5f, z), kolorPrawo, 90f);
             licznikPrawo++;
             
-            // Lewa strona - PRZESUNIĘTE BLIŻEJ DROGI O 1 (X = -5f zamiast -6f)
+            // Lewa strona
             Color kolorLewo = kolory[licznikLewo % kolory.Length];
-            CreateCar($"AutoZaparkowane_Lewa_{i}", new Vector3(-5f, 0.5f, z), kolorLewo, 90f);
+            CreateCar($"AutoZaparkowane_Lewa_{i}", new Vector3(-5.5f, 0.5f, z), kolorLewo, 90f);
             licznikLewo++;
         }
         
-        CreateObstacle("FalszywaLuka", new Vector3(5f, 0.5f, -35f), new Vector3(0.8f, 1f, 0.8f), new Color(0.5f, 0.5f, 0.5f));
+        // === ZAMIEŃ WYBRANE SAMOCHODY NA MAŁE PRZESZKODY (BLIŻEJ DROGI O 1.5f) ===
+        
+        // Usuń AutoZaparkowane_Lewa_3 (indeks 3) - przesuń bliżej drogi o 1.5f (z -5.5 na -4.0)
+        GameObject lewa3 = GameObject.Find("AutoZaparkowane_Lewa_3");
+        if (lewa3 != null)
+        {
+            Vector3 pos = lewa3.transform.position;
+            Destroy(lewa3);
+            CreateObstacle("FalszywaLuka_Lewa_3", new Vector3(-4.0f, 0.5f, pos.z), new Vector3(0.5f, 1f, 1.125f), new Color(0.5f, 0.5f, 0.5f));
+            Debug.Log("Zamieniono AutoZaparkowane_Lewa_3 na przeszkodę (bliżej drogi o 1.5f)");
+        }
+        
+        // Usuń AutoZaparkowane_Prawa_4 (indeks 4) - przesuń bliżej drogi o 1.5f (z 5.5 na 4.0)
+        GameObject prawa4 = GameObject.Find("AutoZaparkowane_Prawa_4");
+        if (prawa4 != null)
+        {
+            Vector3 pos = prawa4.transform.position;
+            Destroy(prawa4);
+            CreateObstacle("FalszywaLuka_Prawa_4", new Vector3(4.0f, 0.5f, pos.z), new Vector3(0.5f, 1f, 1.125f), new Color(0.5f, 0.5f, 0.5f));
+            Debug.Log("Zamieniono AutoZaparkowane_Prawa_4 na przeszkodę (bliżej drogi o 1.5f)");
+        }
+        
+        // === TYLKO USUŃ AutoZaparkowane_Prawa_8 - BEZ PRZESZKODY ===
+        GameObject prawa8 = GameObject.Find("AutoZaparkowane_Prawa_8");
+        if (prawa8 != null)
+        {
+            Destroy(prawa8);
+            Debug.Log("Usunięto AutoZaparkowane_Prawa_8");
+        }
+        
+        // Opcjonalnie - dodatkowa mała przeszkoda testowa
+        CreateObstacle("FalszywaLuka", new Vector3(4.0f, 0.5f, -35f), new Vector3(0.5f, 1f, 1.125f), new Color(0.5f, 0.5f, 0.5f));
 
         GameObject planeObj = GameObject.Find("Plane");
         if (planeObj != null)
@@ -82,6 +113,7 @@ public class ScenaMapa2 : MonoBehaviour
         GameObject obs = GameObject.CreatePrimitive(PrimitiveType.Cube);
         obs.name = name;
         obs.transform.position = pos;
+        obs.transform.rotation = Quaternion.Euler(0, 0, 0);
         obs.transform.localScale = scale;
         SetColor(obs, color);
     }

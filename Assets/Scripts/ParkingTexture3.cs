@@ -31,21 +31,21 @@ public class ParkingTexture3 : MonoBehaviour
         int aleR = ToTexX(W, 2.5f);
         Fill(tex, aleL, 0, aleR - aleL, H, asfaltAlejka);
 
-        // === PARKING SKOŚNY (SZERSZE MIEJSCA O 50%) ===
+        // === PARKING SKOŚNY (KĄT 75 STOPNI) ===
         
-        // Prawa strona parkingu (X od 3 do 13 - szersze)
+        // Prawa strona parkingu (X od 3 do 13)
         int prawaStart = ToTexX(W, 3f);
         int prawaKoniec = ToTexX(W, 13f);
         
-        // Lewa strona parkingu (X od -13 do -3 - szersze)
+        // Lewa strona parkingu (X od -13 do -3)
         int lewaStart = ToTexX(W, -13f);
         int lewaKoniec = ToTexX(W, -3f);
         
         // === MIEJSCA PARKINGOWE SKOŚNE ===
-        // Co 7.5 jednostki w osi Z (50% szersze niż 5)
+        // Co 7.5 jednostki w osi Z
         float[] miejscaZ = { -48.75f, -41.25f, -33.75f, -26.25f, -18.75f, -11.25f, -3.75f, 3.75f, 11.25f, 18.75f, 26.25f, 33.75f, 41.25f, 48.75f };
         
-        // Kąt 75 stopni (bez zmian)
+        // Kąt 75 stopni
         float skosAngle = 75f;
         
         foreach (float z in miejscaZ)
@@ -73,7 +73,10 @@ public class ParkingTexture3 : MonoBehaviour
 
         tex.Apply();
         parkingTexture = tex;
-        ParkingTexture1.parkingTexture = tex;  
+        
+        // 🔴🔴🔴 TA LINIJKA BYŁA BRAKUJĄCA - DZIEKI NIEJ KAMERY DZIAŁAJĄ! 🔴🔴🔴
+        ParkingTexture1.parkingTexture = tex;
+        
         return tex;
     }
 

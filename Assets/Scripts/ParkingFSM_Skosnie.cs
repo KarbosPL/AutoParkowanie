@@ -110,10 +110,10 @@ public class ParkingFSM_Skosnie : MonoBehaviour
             }
         }
 
-        if (skanujePrawe && sensor.rightMiddle < 3.5f)
+        if (skanujePrawe && sensor.frontRight <4f)
             miejsceZajetePrawe = true;
 
-        if (sensor.rightMiddle < 2f)
+        if (sensor.frontRight < 2f)
             skanujePrawe = false;
 
         // LEWA STRONA
