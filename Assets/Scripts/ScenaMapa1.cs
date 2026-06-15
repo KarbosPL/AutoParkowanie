@@ -12,7 +12,7 @@ public class ScenaMapa1 : MonoBehaviour
             SetColor(agent, new Color(0.9f, 0.9f, 0.1f));
 
             agent.GetComponent<ParkingFSM_Rownolegle>().enabled = true;
-          agent.GetComponent<ParkingFSM_Prostopadle>().enabled = false;   
+            agent.GetComponent<ParkingFSM_Prostopadle>().enabled = false;   
         }
 
         // Rząd prawy
@@ -34,6 +34,23 @@ public class ScenaMapa1 : MonoBehaviour
         GameObject planeObj = GameObject.Find("Plane");
         if (planeObj != null)
             planeObj.AddComponent<ParkingTexture1>();
+        
+        // === WŁĄCZ KAMERĘ ===
+        EnableCamera();
+    }
+    
+    void EnableCamera()
+    {
+        Camera mainCam = Camera.main;
+        if (mainCam != null)
+        {
+            Kamera kam = mainCam.GetComponent<Kamera>();
+            if (kam != null)
+            {
+                kam.enabled = true;
+                Debug.Log("Kamera włączona w ScenaMapa1");
+            }
+        }
     }
 
     void CreateCar(string name, Vector3 pos, Color color)
