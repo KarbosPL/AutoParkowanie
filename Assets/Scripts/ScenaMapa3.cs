@@ -116,6 +116,23 @@ public class ScenaMapa3 : MonoBehaviour
         {
             Debug.LogError("Nie znaleziono obiektu Plane!");
         }
+        
+        // === WŁĄCZ KAMERĘ ===
+        EnableCamera();
+    }
+    
+    void EnableCamera()
+    {
+        Camera mainCam = Camera.main;
+        if (mainCam != null)
+        {
+            Kamera kam = mainCam.GetComponent<Kamera>();
+            if (kam != null)
+            {
+                kam.enabled = true;
+                Debug.Log("Kamera włączona w ScenaMapa3");
+            }
+        }
     }
 
     void CreateCar(string name, Vector3 pos, Color color, float rotationY)
