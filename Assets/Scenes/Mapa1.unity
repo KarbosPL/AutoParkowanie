@@ -1344,12 +1344,14 @@ MonoBehaviour:
   frontStopDist: 1.5
   backStopDist: 2
   sideWarnDist: 1.5
-  skosDepth: 8
+  backupDistance: 7
+  skosDepth: 3
   parkingRight: 1
   skanujePrawe: 0
   skanujeLewe: 0
   miejsceZajetePrawe: 0
   miejsceZajeteLewe: 0
+  enableDebugLogs: 1
 --- !u!1 &1190387020
 GameObject:
   m_ObjectHideFlags: 0

@@ -74,10 +74,10 @@ public class ParkingSensor : MonoBehaviour
         Vector3 backCenter  = pos - fwd * 2.3f;
 
         // Skanuj wąski pas przy krawędzi lewej i prawej
-        cameraFL = ScanStrip(frontCenter, -3f, -0.8f);
-        cameraFR = ScanStrip(frontCenter,  0.8f,  3f);
-        cameraBL = ScanStrip(backCenter,  -3f, -0.8f);
-        cameraBR = ScanStrip(backCenter,   0.8f,  3f);
+        cameraFL = ScanStrip(frontCenter, -4f, -0.8f);
+        cameraFR = ScanStrip(frontCenter,  0.8f,  4f);
+        cameraBL = ScanStrip(backCenter,  -4f, -0.8f);
+        cameraBR = ScanStrip(backCenter,   0.8f,  4f);
     }
 
     bool ScanStrip(Vector3 basePos, float xFrom, float xTo)
@@ -148,13 +148,13 @@ public class ParkingSensor : MonoBehaviour
         Color colBR = cameraBR ? Color.white : Color.yellow;
 
         // Prawy prostokąt przedni
-        DrawCameraRect(fwdPos,  transform.right,  0.8f, 3f, transform.forward, 0.3f, colFR);
+        DrawCameraRect(fwdPos,  transform.right,  0.8f, 4f, transform.forward, 0.3f, colFR);
         // Lewy prostokąt przedni
-        DrawCameraRect(fwdPos, -transform.right,  0.8f, 3f, transform.forward, 0.3f, colFL);
+        DrawCameraRect(fwdPos, -transform.right,  0.8f, 4f, transform.forward, 0.3f, colFL);
         // Prawy prostokąt tylny
-        DrawCameraRect(backPos,  transform.right, 0.8f, 3f, transform.forward, 0.3f, colBR);
+        DrawCameraRect(backPos,  transform.right, 0.8f, 4f, transform.forward, 0.3f, colBR);
         // Lewy prostokąt tylny
-        DrawCameraRect(backPos, -transform.right, 0.8f, 3f, transform.forward, 0.3f, colBL);
+        DrawCameraRect(backPos, -transform.right, 0.8f, 4f, transform.forward, 0.3f, colBL);
     }
     void DrawCameraRect(Vector3 origin, Vector3 sideDir, float near, float far,Vector3 fwd, float halfHeight, Color c)
     {

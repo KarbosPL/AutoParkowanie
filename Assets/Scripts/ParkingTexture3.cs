@@ -31,21 +31,21 @@ public class ParkingTexture3 : MonoBehaviour
         int aleR = ToTexX(W, 2.5f);
         Fill(tex, aleL, 0, aleR - aleL, H, asfaltAlejka);
 
-        // === PARKING SKOŚNY (OSTRY KĄT 75 STOPNI) ===
+        // === PARKING SKOŚNY (SZERSZE MIEJSCA O 50%) ===
         
-        // Prawa strona parkingu (X od 3 do 11)
+        // Prawa strona parkingu (X od 3 do 13 - szersze)
         int prawaStart = ToTexX(W, 3f);
-        int prawaKoniec = ToTexX(W, 11f);
+        int prawaKoniec = ToTexX(W, 13f);
         
-        // Lewa strona parkingu (X od -11 do -3)
-        int lewaStart = ToTexX(W, -11f);
+        // Lewa strona parkingu (X od -13 do -3 - szersze)
+        int lewaStart = ToTexX(W, -13f);
         int lewaKoniec = ToTexX(W, -3f);
         
         // === MIEJSCA PARKINGOWE SKOŚNE ===
-        // Co 5 jednostek w osi Z
-        float[] miejscaZ = { -45f, -40f, -35f, -30f, -25f, -20f, -15f, -10f, -5f, 0f, 5f, 10f, 15f, 20f, 25f, 30f, 35f, 40f, 45f };
+        // Co 7.5 jednostki w osi Z (50% szersze niż 5)
+        float[] miejscaZ = { -48.75f, -41.25f, -33.75f, -26.25f, -18.75f, -11.25f, -3.75f, 3.75f, 11.25f, 18.75f, 26.25f, 33.75f, 41.25f, 48.75f };
         
-        // OSTY KĄT - 75 stopni (prawie prostopadły)
+        // Kąt 75 stopni (bez zmian)
         float skosAngle = 75f;
         
         foreach (float z in miejscaZ)
@@ -60,12 +60,12 @@ public class ParkingTexture3 : MonoBehaviour
         }
         
         // Linie zewnętrzne na krańcach parkingów
-        DrawV(tex, ToTexX(W, 11f), 0, H, linia, 4);
-        DrawV(tex, ToTexX(W, -11f), 0, H, linia, 4);
+        DrawV(tex, ToTexX(W, 13f), 0, H, linia, 4);
+        DrawV(tex, ToTexX(W, -13f), 0, H, linia, 4);
         
-        // Linie poprzeczne na końcach (Z = -47 i 47)
-        int koniecDolny = ToTexY(H, -47f);
-        int koniecGorny = ToTexY(H, 47f);
+        // Linie poprzeczne na końcach (Z = -48.75 i 48.75)
+        int koniecDolny = ToTexY(H, -48.75f);
+        int koniecGorny = ToTexY(H, 48.75f);
         DrawH(tex, koniecDolny, prawaStart, prawaKoniec, linia, 4);
         DrawH(tex, koniecDolny, lewaStart, lewaKoniec, linia, 4);
         DrawH(tex, koniecGorny, prawaStart, prawaKoniec, linia, 4);
@@ -84,7 +84,6 @@ public class ParkingTexture3 : MonoBehaviour
         
         for (int px = xStart; px < xEnd; px++)
         {
-            // Oblicz przesunięcie w Y na podstawie X
             float t = (float)(px - xStart) / width;
             int offset = Mathf.RoundToInt(t * 50f * tanAngle);
             

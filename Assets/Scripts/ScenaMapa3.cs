@@ -7,7 +7,7 @@ public class ScenaMapa3 : MonoBehaviour
         GameObject agent = GameObject.Find("AutoAgent");
         if (agent)
         {
-            agent.transform.position = new Vector3(0, 0.5f, -45f);
+            agent.transform.position = new Vector3(0, 0.5f, -48.75f);
             agent.transform.rotation = Quaternion.Euler(0, 0, 0);
             SetColor(agent, new Color(0.9f, 0.9f, 0.1f));
 
@@ -33,8 +33,8 @@ public class ScenaMapa3 : MonoBehaviour
             return;
         }
 
-        // Miejsca parkingowe co 5 jednostek od -45 do 45
-        float[] miejscaZ = { -45f, -40f, -35f, -30f, -25f, -20f, -15f, -10f, -5f, 0f, 5f, 10f, 15f, 20f, 25f, 30f, 35f, 40f, 45f };
+        // Miejsca parkingowe co 7.5 jednostki od -48.75 do 48.75
+  float[] miejscaZ = {-47.75f, -40.25f, -32.75f, -25.25f, -17.75f, -10.25f, -2.75f, 4.75f, 12.25f, 19.75f, 27.25f, 34.75f, 42.25f, 49.75f };
         
         Color[] kolory = new Color[]
         {
@@ -55,17 +55,17 @@ public class ScenaMapa3 : MonoBehaviour
         
         for (int i = 0; i < miejscaZ.Length; i++)
         {
-            // Przesunięcie o połowę szerokości miejsca (2.5f)
-            float z = miejscaZ[i] - 2.5f;
+            // Przesunięcie o połowę szerokości miejsca (3.75f zamiast 2.5f)
+            float z = miejscaZ[i] - 3.75f;
             
-            // Prawa strona - ZWIĘKSZONE X o 0,5 (z 6f na 6.5f)
+            // Prawa strona - środek miejsca na X = 8f (średnia z 3 i 13)
             Color kolorPrawo = kolory[licznikPrawo % kolory.Length];
-            CreateCar($"AutoZaparkowane_Prawa_{i}", new Vector3(6.5f, 0.5f, z), kolorPrawo, 45f);
+            CreateCar($"AutoZaparkowane_Prawa_{i}", new Vector3(5.6f, 0.5f, z), kolorPrawo, 45f);
             licznikPrawo++;
             
-            // Lewa strona - ZWIĘKSZONE X o 0,5 (z -6f na -6.5f)
+            // Lewa strona - środek miejsca na X = -8f (średnia z -13 i -3)
             Color kolorLewo = kolory[licznikLewo % kolory.Length];
-            CreateCar($"AutoZaparkowane_Lewa_{i}", new Vector3(-6.5f, 0.5f, z), kolorLewo, -45f);
+            CreateCar($"AutoZaparkowane_Lewa_{i}", new Vector3(-5.5f, 0.5f, z), kolorLewo, -45f);
             licznikLewo++;
         }
         
