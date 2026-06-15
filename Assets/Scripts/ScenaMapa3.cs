@@ -34,7 +34,7 @@ public class ScenaMapa3 : MonoBehaviour
         }
 
         // Miejsca parkingowe co 7.5 jednostki od -48.75 do 48.75
-  float[] miejscaZ = {-47.75f, -40.25f, -32.75f, -25.25f, -17.75f, -10.25f, -2.75f, 4.75f, 12.25f, 19.75f, 27.25f, 34.75f, 42.25f, 49.75f };
+        float[] miejscaZ = {-47.75f, -40.25f, -32.75f, -25.25f, -17.75f, -10.25f, -2.75f, 4.75f, 12.25f, 19.75f, 27.25f, 34.75f, 42.25f, 49.75f };
         
         Color[] kolory = new Color[]
         {
@@ -53,20 +53,53 @@ public class ScenaMapa3 : MonoBehaviour
         int licznikPrawo = 0;
         int licznikLewo = 0;
         
+        // Najpierw wygeneruj wszystkie samochody
         for (int i = 0; i < miejscaZ.Length; i++)
         {
-            // Przesunięcie o połowę szerokości miejsca (3.75f zamiast 2.5f)
+            // Przesunięcie o połowę szerokości miejsca (3.75f)
             float z = miejscaZ[i] - 3.75f;
             
-            // Prawa strona - środek miejsca na X = 8f (średnia z 3 i 13)
+            // Prawa strona - X = 5.6f
             Color kolorPrawo = kolory[licznikPrawo % kolory.Length];
             CreateCar($"AutoZaparkowane_Prawa_{i}", new Vector3(5.6f, 0.5f, z), kolorPrawo, 45f);
             licznikPrawo++;
             
-            // Lewa strona - środek miejsca na X = -8f (średnia z -13 i -3)
+            // Lewa strona - X = -5.5f
             Color kolorLewo = kolory[licznikLewo % kolory.Length];
             CreateCar($"AutoZaparkowane_Lewa_{i}", new Vector3(-5.5f, 0.5f, z), kolorLewo, -45f);
             licznikLewo++;
+        }
+        
+        // === ZAMIEŃ WYBRANE SAMOCHODY NA MAŁE PRZESZKODY ===
+        
+        // Zamień AutoZaparkowane_Lewa_3 na przeszkodę (przy drodze, X = -3)
+        GameObject lewa3 = GameObject.Find("AutoZaparkowane_Lewa_3");
+        if (lewa3 != null)
+        {
+            Vector3 pos = lewa3.transform.position;
+            Destroy(lewa3);
+            // Przeszkoda przy samej drodze (alejka kończy się na -2.5)
+            CreateObstacle("FalszywaLuka_Lewa_3", new Vector3(-3.0f, 0.5f, pos.z), new Vector3(0.5f, 1f, 1.125f), new Color(0.5f, 0.5f, 0.5f));
+            Debug.Log("Zamieniono AutoZaparkowane_Lewa_3 na przeszkodę (X = -3)");
+        }
+        
+        // Zamień AutoZaparkowane_Prawa_5 na przeszkodę (przy drodze, X = 3)
+        GameObject prawa5 = GameObject.Find("AutoZaparkowane_Prawa_5");
+        if (prawa5 != null)
+        {
+            Vector3 pos = prawa5.transform.position;
+            Destroy(prawa5);
+            // Przeszkoda przy samej drodze (alejka kończy się na 2.5)
+            CreateObstacle("FalszywaLuka_Prawa_5", new Vector3(3.0f, 0.5f, pos.z), new Vector3(0.5f, 1f, 1.125f), new Color(0.5f, 0.5f, 0.5f));
+            Debug.Log("Zamieniono AutoZaparkowane_Prawa_5 na przeszkodę (X = 3)");
+        }
+        
+        // === TYLKO USUŃ AutoZaparkowane_Prawa_8 - BEZ PRZESZKODY ===
+        GameObject prawa8 = GameObject.Find("AutoZaparkowane_Prawa_8");
+        if (prawa8 != null)
+        {
+            Destroy(prawa8);
+            Debug.Log("Usunięto AutoZaparkowane_Prawa_8");
         }
         
         GameObject planeObj = GameObject.Find("Plane");
@@ -101,6 +134,16 @@ public class ScenaMapa3 : MonoBehaviour
         car.transform.rotation = Quaternion.Euler(0, rotationY, 0);
         car.transform.localScale = new Vector3(2f, 1f, 4.5f);
         SetColor(car, color);
+    }
+
+    void CreateObstacle(string name, Vector3 pos, Vector3 scale, Color color)
+    {
+        GameObject obs = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        obs.name = name;
+        obs.transform.position = pos;
+        obs.transform.rotation = Quaternion.Euler(0, 0, 0);
+        obs.transform.localScale = scale;
+        SetColor(obs, color);
     }
 
     void SetColor(GameObject obj, Color color)
