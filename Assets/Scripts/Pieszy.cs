@@ -4,7 +4,7 @@ public class Pieszy : MonoBehaviour
 {
     [Header("Ruch")]
     public float walkSpeed = 2f;
-    public float stopDistance = 3f; // Zatrzymaj się 3m przed autem
+    public float stopDistance = 5f; // Zatrzymaj się 3m przed autem
     public float waitTime = 3f;     // Czas zatrzymania
     
     [Header("Po zniknięciu")]

@@ -7,7 +7,7 @@ public class ScenaMapa3 : MonoBehaviour
         GameObject agent = GameObject.Find("AutoAgent");
         if (agent)
         {
-            agent.transform.position = new Vector3(0, 0.5f, -48.75f);
+            agent.transform.position = new Vector3(0, 0.5f, -40.75f);
             agent.transform.rotation = Quaternion.Euler(0, 0, 0);
             SetColor(agent, new Color(0.9f, 0.9f, 0.1f));
 

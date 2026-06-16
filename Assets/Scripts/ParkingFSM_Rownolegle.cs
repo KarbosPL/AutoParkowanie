@@ -14,7 +14,7 @@ public class ParkingFSM_Rownolegle : MonoBehaviour
     public float alignSpeed   = 0.8f;
 
     [Header("Bezpieczeństwo")]
-    public float frontStopDist = 1.5f;
+    public float frontStopDist = 2.5f;
     public float backStopDist  = 2.0f;
     public float sideWarnDist  = 1.5f;
 
